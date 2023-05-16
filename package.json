@@ -1,0 +1,24 @@
+{
+  "name": "projeto17-shortly",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "<h1 align=\"center\">Shortly - Node / SQL</h1>",
+  "main": "./src/app.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "joi": "^17.9.2",
+    "pg": "^8.11.0"
+  }
+}
