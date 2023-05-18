@@ -1,23 +1,51 @@
 import { db } from "../database/database.config.js";
 import {cadastroSchema, loginSchema, urlSchema} from "../schemas/schemas.js";
+import bcrypt from "bcrypt";
+import { v4 as uuid } from "uuid";
 
 
 
 export async function cadastro(req, res) {
+  const {email, name, password, confirmPassword}= req.body
 
+  //validacao do schema
   const validation = cadastroSchema.validate(req.body, { abortEarly: false });
-
   if (validation.error) {
     const errors = validation.error.details.map((d) => d.message);
     return res.status(422).send(errors);
   }
 
-//   } catch (err) {
-//     res.status(500).send(err.message);
-//   }
+  // verificar se as senhas coincidem
+  // if (password !== confirmPassword) {
+  //   return res.sendStatus(400);
+  // }
+
+  try{
+     // Verificar se esse e-mail já foi cadastrado
+    const usuarioExiste = await db.query(`
+      SELECT * FROM usuarios WHERE email = $1
+    `, [email])
+
+    if (usuarioExiste.rowCount > 0) return res.sendStatus(409)
+
+     // Criptografar senha
+     const hash = bcrypt.hashSync(password, 10)
+
+     // Criar conta e guardar senha encriptada no banco
+    await db.query(
+            `INSERT INTO usuarios (email, name, password) VALUES ($1, $2, $3)`,
+            [email, name, hash]
+          );
+
+  return res.sendStatus(201)
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 }
 
 export async function login(req, res) {
+  const {email, password}= req.body
+
   const validation = loginSchema.validate(req.body, { abortEarly: false });
 
   if (validation.error) {
@@ -25,16 +53,16 @@ export async function login(req, res) {
     return res.status(422).send(errors);
   }
 
-//   try {
-//     const jogos = await db.query("SELECT * FROM games");
-//     res.send(jogos.rows);
-//   } catch (err) {
-//     res.status(500).send(err.message);
-//   }
+  try {
+    
+    res.status(200).send({"token": token});
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 }
 
 export async function inserirURL(req, res) {
-//   const { name, phone, cpf, birthday } = req.body;
+  const { url } = req.body;
 
 const validation = urlSchema.validate(req.body, { abortEarly: false });
 
@@ -43,20 +71,13 @@ const validation = urlSchema.validate(req.body, { abortEarly: false });
     return res.status(422).send(errors);
   }
 
-//   try {
-//     const cpfExiste = (
-//       await db.query("SELECT * FROM customers WHERE cpf = $1", [cpf])
-//     ).rows;
-//     if (cpfExiste.length !== 0) return res.sendStatus(409);
+  try {
 
-//     await db.query(
-//       `INSERT INTO customers (name, phone, cpf, birthday) VALUES ($1, $2, $3, $4)`,
-//       [name, phone, cpf, birthday]
-//     );
-//     res.sendStatus(201);
-//   } catch (err) {
-//     res.status(500).send(err.message);
-//   }
+
+    res.status(201).send({"id": id, "shortUrl": shortUrl});
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 }
 
 export async function listarURLporId(req, res) {
