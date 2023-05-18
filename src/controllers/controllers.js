@@ -54,7 +54,24 @@ export async function login(req, res) {
   }
 
   try {
-    
+    // Verificar se esse e-mail já foi cadastrado
+    const usuarioExiste = await db.query(`
+    SELECT * FROM usuarios WHERE email = $1
+  `, [email])
+
+  if (usuarioExiste.rowCount <= 0) return res.sendStatus(401)
+
+  // Verificar se a senha digitada corresponde com a criptografada
+  const senhaEstaCorreta = bcrypt.compareSync(password, usuarios.password)
+  if (!senhaEstaCorreta) return res.status(401).send("Senha incorreta")
+
+  // Criar um token para enviar ao usuário
+  const token = uuid()
+
+  // Guardar o token e o id do usuário para saber que ele está logado
+  await db.query(`INSERT INTO sessoes ("userId", token) VALUES ($1, $2)`, [usuarios.id, token])
+
+  // Finalizar com status de sucesso e enviar token para o cliente
     res.status(200).send({"token": token});
   } catch (err) {
     res.status(500).send(err.message);
