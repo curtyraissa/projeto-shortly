@@ -1,23 +1,21 @@
 import joi from "joi";
 
-// //Jogos
-// export const jogosSchema = joi.object({
-//   name: joi.string().required(),
-//   image: joi.string().required(),
-//   stockTotal: joi.number().min(1).required(),
-//   pricePerDay: joi.number().min(1).required(),
-// });
+//cadastro
+export const cadastroSchema = joi.object({
+    name: joi.string().required(),
+    email: joi.string().email().required(),
+    password: joi.string().required(),
+    confirmPassword: joi.string().valid(joi.ref('password')).required()
+  });
 
-// //Clientes
-// export const clientesSchema = joi.object({
-//   name: joi.string().required(),
-//   phone: joi
-//     .string()
-//     .pattern(/^[0-9]{11}$/)
-//     .required(),
-//   cpf: joi
-//     .string()
-//     .pattern(/^[0-9]{11}$/)
-//     .required(),
-//   birthday: joi.date().required(),
-// });
+  //login
+  export const loginSchema = joi.object({
+    email: joi.string().email().required(),
+    password: joi.string().required()
+  });
+
+  //url
+ export const urlSchema = joi.object({
+    url: joi.string().uri().required()
+  });
+

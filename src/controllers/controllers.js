@@ -1,38 +1,47 @@
 import { db } from "../database/database.config.js";
-// import {jogosSchema, clientesSchema, alugueisSchema} from "../schemas/schemas.js";
+import {cadastroSchema, loginSchema, urlSchema} from "../schemas/schemas.js";
 
-// const validation = jogosSchema.validate(req.body, { abortEarly: false });
 
-//   if (validation.error) {
-//     const errors = validation.error.details.map((d) => d.message);
-//     return res.status(400).send(errors);
-//   }
 
-// export async function cadastro(req, res) {
+export async function cadastro(req, res) {
+
+  const validation = cadastroSchema.validate(req.body, { abortEarly: false });
+
+  if (validation.error) {
+    const errors = validation.error.details.map((d) => d.message);
+    return res.status(422).send(errors);
+  }
 
 //   } catch (err) {
 //     res.status(500).send(err.message);
 //   }
-// }
+}
 
-// export async function login(req, res) {
+export async function login(req, res) {
+  const validation = loginSchema.validate(req.body, { abortEarly: false });
+
+  if (validation.error) {
+    const errors = validation.error.details.map((d) => d.message);
+    return res.status(422).send(errors);
+  }
+
 //   try {
 //     const jogos = await db.query("SELECT * FROM games");
 //     res.send(jogos.rows);
 //   } catch (err) {
 //     res.status(500).send(err.message);
 //   }
-// }
+}
 
-// export async function inserirURL(req, res) {
+export async function inserirURL(req, res) {
 //   const { name, phone, cpf, birthday } = req.body;
 
-//   const validation = clientesSchema.validate(req.body, { abortEarly: false });
+const validation = urlSchema.validate(req.body, { abortEarly: false });
 
-//   if (validation.error) {
-//     const errors = validation.error.details.map((d) => d.message);
-//     return res.status(400).send(errors);
-//   }
+  if (validation.error) {
+    const errors = validation.error.details.map((d) => d.message);
+    return res.status(422).send(errors);
+  }
 
 //   try {
 //     const cpfExiste = (
@@ -48,9 +57,9 @@ import { db } from "../database/database.config.js";
 //   } catch (err) {
 //     res.status(500).send(err.message);
 //   }
-// }
+}
 
-// export async function listarURLporId(req, res) {
+export async function listarURLporId(req, res) {
 //   try {
 //     const clientes = await db.query("SELECT * FROM customers");
 //     const aniversario = clientes.rows.map(item => ({...item,  birthday: new Date(item.birthday).toISOString().split('T')[0]  }))
@@ -58,9 +67,9 @@ import { db } from "../database/database.config.js";
 //   } catch (err) {
 //     res.status(500).send(err.message);
 //   }
-// }
+}
 
-// export async function buscarShortURL(req, res) {
+export async function buscarShortURL(req, res) {
 //     const { id } = req.params;
 //     try {
 //       const clientes = await db.query("SELECT * FROM customers WHERE id = $1", [id]);
@@ -81,9 +90,9 @@ import { db } from "../database/database.config.js";
 //     } catch (err) {
 //       res.status(500).send(err.message);
 //     }
-//   }
+  }
 
-// export async function deletarURL(req, res) {
+export async function deletarURL(req, res) {
 //   const { name, phone, cpf, birthday } = req.body;
 //   const { id } = req.params;
 
@@ -104,9 +113,9 @@ import { db } from "../database/database.config.js";
 //   } catch (err) {
 //     res.status(500).send(err.message);
 //   }
-// }
+}
 
-// export async function listarUsuarioToken(req, res) {
+export async function listarUsuarioToken(req, res) {
 //   try {
 //     const resultado = await db.query(`SELECT 
 //     rentals.id, 
@@ -160,9 +169,9 @@ import { db } from "../database/database.config.js";
 //   } catch (err) {
 //     res.status(500).send(err.message);
 //   }
-// }
+}
 
-// export async function ranking(req, res) {
+export async function ranking(req, res) {
 //     const { customerId, gameId, daysRented } = req.body;
 
 //     const validation = alugueisSchema.validate(req.body, { abortEarly: false });
@@ -198,9 +207,9 @@ import { db } from "../database/database.config.js";
 //     } catch (err) {
 //       res.status(500).send(err.message);
 //     } 
-//   }
+  }
 
-// export async function finalizarAluguel(req, res) {
+export async function finalizarAluguel(req, res) {
 //     const {id} = req.params;
 //   try {
 //     const returnDate = new Date().toISOString().slice(0, 10)
@@ -228,9 +237,9 @@ import { db } from "../database/database.config.js";
 //   } catch (err) {
 //     res.status(500).send(err.message);
 //   }
-// }
+}
 
-// export async function apagarAluguel(req, res) {
+export async function apagarAluguel(req, res) {
 //     const {id} = req.params;
 //   try {
 //     const idExiste = await db.query(`SELECT * FROM rentals WHERE id=$1`,[id]);
@@ -242,4 +251,4 @@ import { db } from "../database/database.config.js";
 //   } catch (err) {
 //     res.status(500).send(err.message);
 //   }
-// }
+}
