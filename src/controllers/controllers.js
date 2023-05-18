@@ -2,6 +2,7 @@ import { db } from "../database/database.config.js";
 import {cadastroSchema, loginSchema, urlSchema} from "../schemas/schemas.js";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
+import { nanoid } from 'nanoid'
 
 
 
@@ -89,7 +90,7 @@ const validation = urlSchema.validate(req.body, { abortEarly: false });
   }
 
   try {
-
+    model.id = nanoid()
 
     res.status(201).send({"id": id, "shortUrl": shortUrl});
   } catch (err) {
