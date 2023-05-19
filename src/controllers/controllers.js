@@ -139,26 +139,17 @@ export async function listarURLporId(req, res) {
 }
 
 export async function buscarShortURL(req, res) {
-// //     const { id } = req.params;
-// //     try {
-// //       const clientes = await db.query("SELECT * FROM customers WHERE id = $1", [id]);
-// //       if (!clientes.rows.length) return res.sendStatus(404);
-// //       const response = clientes.rows[0];
-  
-// //       const birthday = new Date(response.birthday);
-// //       // Formatting date
-// //       let day = birthday.getUTCDate();
-// //       day = day.toString().length == 1 ? '0' + day : day;
-// //       let month = birthday.getUTCMonth() + 1;
-// //       month = month.toString().length == 1 ? '0' + month : month;
-// //       const year = birthday.getUTCFullYear();
-  
-// //       // Replace original date for formatted date
-// //       response.birthday = `${year}-${month}-${day}`
-// //       res.send(response);
-// //     } catch (err) {
-// //       res.status(500).send(err.message);
-// //     }
+    const { shortUrl } = req.params;
+    try {
+     const urlExiste = await db.query(`SELECT * FROM url WHERE "shortUrl" = $1`, [shortUrl]);
+      if (urlExiste.rowCount === 0) return res.sendStatus(404)
+
+      await db.query(`UPDATE shortens SET "visitCount" = "visitCount" + 1 WHERE id = $1`, [urlExiste.rows[0].id])
+      
+      res.redirect(urlExiste.rows[0].url);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
   }
 
 export async function deletarURL(req, res) {
