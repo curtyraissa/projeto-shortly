@@ -144,7 +144,7 @@ export async function buscarShortURL(req, res) {
      const urlExiste = await db.query(`SELECT * FROM url WHERE "shortUrl" = $1`, [shortUrl]);
       if (urlExiste.rowCount === 0) return res.sendStatus(404)
 
-      await db.query(`UPDATE shortens SET "visitCount" = "visitCount" + 1 WHERE id = $1`, [urlExiste.rows[0].id])
+      await db.query(`UPDATE url SET "visitCount" = "visitCount" + 1 WHERE id = $1`, [urlExiste.rows[0].id])
       
       res.redirect(urlExiste.rows[0].url);
     } catch (err) {
@@ -153,26 +153,35 @@ export async function buscarShortURL(req, res) {
   }
 
 export async function deletarURL(req, res) {
-// //   const { name, phone, cpf, birthday } = req.body;
-// //   const { id } = req.params;
 
-// //   const validation = clientesSchema.validate(req.body, { abortEarly: false });
+  // O cliente deve enviar um header de authorization com o token
+  const { authorization } = req.headers;
 
-// //   if (validation.error) {
-// //     const errors = validation.error.details.map((d) => d.message);
-// //     return res.status(400).send(errors);
-// //   }
+  // O formato é assim: Bearer TOKEN, então para pegar o token vamos tirar a palavra Bearer
+  const token = authorization?.replace("Bearer ", "");
 
-// //   try {
-// //     const cpfExiste = (
-// //       await db.query("SELECT * FROM customers WHERE cpf=$1 AND id!=$2", [cpf, id]));
-// //     if (cpfExiste.rowCount) return res.sendStatus(409);
+  // Se não houver token, não há autorização para continuar
+  if (!token) return res.status(401).send("Token inexistente");
 
-// //     await db.query(`UPDATE customers SET "name"=$1, "phone"=$2, "cpf"=$3, "birthday"=$4 WHERE "id"=$5`,[name, phone, cpf, birthday, id]);
-// //     res.sendStatus(200);
-// //   } catch (err) {
-// //     res.status(500).send(err.message);
-// //   }
+  try {
+    // Caso o token exista, precisamos descobrir se ele é válido
+    // Ou seja: se ele está na nossa collection de sessoes
+    const sessao = await db.query(`SELECT * FROM sessoes WHERE token = $1`, [token]);
+    // Verifica se há alguma sessão encontrada
+    if (sessao.rows.length === 0) return res.status(401).send("Token inválido");
+
+    // Caso a sessão tenha sido encontrada, iremos guardar na variável "sessao" o objeto de sessão encontrado
+    const sessaoEncontrada = sessao.rows[0];
+
+    // Tendo o id do usuário, podemos procurar seus dados
+    const usuario = await db.query(`SELECT * FROM usuarios WHERE id = $1`, [sessaoEncontrada.userId]);
+    // Verifica se o usuário foi encontrado
+    if (usuario.rows.length === 0) return res.status(401).send("Usuário não encontrado");
+
+  res.sendStatus(204);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 }
 
 export async function listarUsuarioToken(req, res) {
