@@ -21,8 +21,14 @@ ALTER TABLE IF EXISTS ONLY public.sessoes DROP CONSTRAINT IF EXISTS fk_user_sess
 ALTER TABLE IF EXISTS ONLY public.usuarios DROP CONSTRAINT IF EXISTS usuarios_pkey;
 ALTER TABLE IF EXISTS ONLY public.url DROP CONSTRAINT IF EXISTS url_pkey;
 ALTER TABLE IF EXISTS ONLY public.sessoes DROP CONSTRAINT IF EXISTS sessoes_pkey;
+ALTER TABLE IF EXISTS public.usuarios ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE IF EXISTS public.url ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE IF EXISTS public.sessoes ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE IF EXISTS public.usuarios_id_seq;
 DROP TABLE IF EXISTS public.usuarios;
+DROP SEQUENCE IF EXISTS public.url_id_seq;
 DROP TABLE IF EXISTS public.url;
+DROP SEQUENCE IF EXISTS public.sessoes_id_seq;
 DROP TABLE IF EXISTS public.sessoes;
 DROP SCHEMA IF EXISTS public;
 --
@@ -56,6 +62,26 @@ CREATE TABLE public.sessoes (
 
 
 --
+-- Name: sessoes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sessoes_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sessoes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sessoes_id_seq OWNED BY public.sessoes.id;
+
+
+--
 -- Name: url; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -70,6 +96,26 @@ CREATE TABLE public.url (
 
 
 --
+-- Name: url_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.url_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: url_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.url_id_seq OWNED BY public.url.id;
+
+
+--
 -- Name: usuarios; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -80,6 +126,47 @@ CREATE TABLE public.usuarios (
     password text NOT NULL,
     "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
+
+
+--
+-- Name: usuarios_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.usuarios_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: usuarios_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.usuarios_id_seq OWNED BY public.usuarios.id;
+
+
+--
+-- Name: sessoes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sessoes ALTER COLUMN id SET DEFAULT nextval('public.sessoes_id_seq'::regclass);
+
+
+--
+-- Name: url id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.url ALTER COLUMN id SET DEFAULT nextval('public.url_id_seq'::regclass);
+
+
+--
+-- Name: usuarios id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.usuarios ALTER COLUMN id SET DEFAULT nextval('public.usuarios_id_seq'::regclass);
 
 
 --
@@ -98,6 +185,27 @@ CREATE TABLE public.usuarios (
 -- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+
+
+--
+-- Name: sessoes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.sessoes_id_seq', 1, false);
+
+
+--
+-- Name: url_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.url_id_seq', 1, false);
+
+
+--
+-- Name: usuarios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.usuarios_id_seq', 1, false);
 
 
 --
