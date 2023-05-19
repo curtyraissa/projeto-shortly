@@ -125,13 +125,17 @@ export async function inserirURL(req, res) {
 }
 
 export async function listarURLporId(req, res) {
-//   try {
-// //     const clientes = await db.query("SELECT * FROM customers");
-// //     const aniversario = clientes.rows.map(item => ({...item,  birthday: new Date(item.birthday).toISOString().split('T')[0]  }))
-// //     res.send(aniversario);
-//   } catch (err) {
-//     res.status(500).send(err.message);
-//   }
+  const {id} = req.params
+
+  try {
+    const listaPorId = await db.query(`SELECT * FROM url WHERE id = $1;`, [id]);
+
+    if (listaPorId.rowCount === 0) {return res.sendStatus(404);}
+
+    res.status(200).send({"id": result.rows[0].id, "shortUrl": result.rows[0].shortUrl, "url": result.rows[0].url});
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 }
 
 export async function buscarShortURL(req, res) {
