@@ -153,6 +153,7 @@ export async function buscarShortURL(req, res) {
   }
 
 export async function deletarURL(req, res) {
+  const {id} = req.params
 
   // O cliente deve enviar um header de authorization com o token
   const { authorization } = req.headers;
@@ -177,6 +178,11 @@ export async function deletarURL(req, res) {
     const usuario = await db.query(`SELECT * FROM usuarios WHERE id = $1`, [sessaoEncontrada.userId]);
     // Verifica se o usuário foi encontrado
     if (usuario.rows.length === 0) return res.status(401).send("Usuário não encontrado");
+
+    const urlUsuario = await db.query(`SELECT * FROM url WHERE id = $1`, [id])
+    if (urlUsuario.rowCount === 0) return res.sendStatus(404)
+
+    await db.query(`DELETE FROM url WHERE id = $1`, [id])
 
   res.sendStatus(204);
   } catch (err) {
