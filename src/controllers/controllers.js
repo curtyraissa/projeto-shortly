@@ -78,7 +78,7 @@ export async function login(req, res) {
 
 export async function inserirURL(req, res) {
   const { url } = req.body;
-  const { id: userId } = req.params;
+  //const { id: userId } = req.params;
 
   const validation = urlSchema.validate(req.body, { abortEarly: false });
 
@@ -241,39 +241,12 @@ export async function listarUsuarioToken(req, res) {
 
 
 export async function ranking(req, res) {
-// //     const { customerId, gameId, daysRented } = req.body;
-
-// //     const validation = alugueisSchema.validate(req.body, { abortEarly: false });
+try{
   
-// //     if (validation.error) {
-// //       const errors = validation.error.details.map((d) => d.message);
-// //       return res.status(400).send(errors);
-// //     }
-  
-// //     try {
-// //         let returnDate = null;
-// //         let delayFee = null;
-// //         let rentDate = new Date().toISOString().slice(0, 10)
-// //         if(daysRented <= 0) return res.sendStatus(400);
-        
-// //       const clienteExiste = await db.query("SELECT * FROM customers WHERE id = $1", [customerId]);
-// //       if (clienteExiste.rows.length == 0) return res.sendStatus(400);
-
-// //       const jogoExiste = await db.query("SELECT * FROM games WHERE id = $1", [gameId]);
-// //       if (jogoExiste.rows.length == 0) return res.sendStatus(400);
-    
-// //       const originalPrice = daysRented * jogoExiste.rows[0].pricePerDay;
-
-
-// //       const jogoDisponivel = await db.query(`SELECT * FROM rentals WHERE "gameId"=$1 AND "returnDate" is null;`, [gameId]);
-// //       if (jogoDisponivel.rows.length >= jogoExiste.rows[0].stockTotal) return res.sendStatus(400);
-  
-// //       await db.query(
-// //         `INSERT INTO rentals ("customerId", "gameId", "rentDate", "daysRented", "returnDate", "originalPrice", "delayFee") VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-// //         [customerId, gameId, rentDate, daysRented, returnDate, originalPrice, delayFee]
-// //       );
-// //       res.sendStatus(201);
-// //     } catch (err) {
-// //       res.status(500).send(err.message);
-// //     } 
+  res.sendStatus(201);
+    } catch (err) {
+      res.status(500).send(err.message);
+    } 
   }
+
+  
