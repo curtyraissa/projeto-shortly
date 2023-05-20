@@ -190,39 +190,55 @@ export async function deletarURL(req, res) {
 }
 
 export async function listarUsuarioToken(req, res) {
-// //   try {
-//         // O cliente deve enviar um header de authorization com o token
-//         const { authorization } = req.headers
+  // O cliente deve enviar um header de authorization com o token
+  const { authorization } = req.headers;
 
-//         // O formato é assim: Bearer TOKEN, então para pegar o token vamos tirar a palavra Bearer
-//         const token = authorization?.replace("Bearer ", "")
-    
-//         // Se não houver token, não há autorização para continuar
-//         if (!token) return res.status(401).send("Token inexistente")
-    
-//         try {
-//             // Caso o token exista, precisamos descobrir se ele é válido
-//             // Ou seja: se ele está na nossa collection de sessoes
-//             const sessao = await db.query(`SELECT * FROM sessoes WHERE token = $1`, [token]).rows;
-//             if (!sessao) return res.status(401).send("Token inválido")
-    
-//             // Caso a sessão tenha sido encontrada, irá guardar a variavel sessão duas coisas:
-//             // O token e o id do usuário. Tendo o id do usuário, podemos procurar seus dados
-//             const usuario = await db.query(`SELECT * FROM usuarios WHERE id = $1`, [sessoes.userId]).rows;
-//             if (!usuario) return res.status(401).send("Usuário não encontrado")
-    
-//         // O usuario possui _id, nome, email e senha. Mas não podemos enviar a senha!
-//         delete usuario.senha
+  // O formato é assim: Bearer TOKEN, então para pegar o token vamos tirar a palavra Bearer
+  const token = authorization?.replace("Bearer ", "");
 
-//         // Agora basta enviar a resposta ao cliente
-//         res.send(usuario)
+  // Se não houver token, não há autorização para continuar
+  if (!token) return res.status(401).send("Token inexistente");
 
-//     res.send(alugueis)
+  try {
+    // Caso o token exista, precisamos descobrir se ele é válido
+    // Ou seja: se ele está na nossa collection de sessoes
+    const sessao = await db.query(`SELECT * FROM sessoes WHERE token = $1`, [token]);
+    // Verifica se há alguma sessão encontrada
+    if (sessao.rows.length === 0) return res.status(401).send("Token inválido");
+
+    // Caso a sessão tenha sido encontrada, iremos guardar na variável "sessao" o objeto de sessão encontrado
+    const sessaoEncontrada = sessao.rows[0];
+
+    // Tendo o id do usuário, podemos procurar seus dados
+    const usuario = await db.query(`SELECT * FROM usuarios WHERE id = $1`, [sessaoEncontrada.userId]);
+    // Verifica se o usuário foi encontrado
+    if (usuario.rows.length === 0) return res.status(401).send("Usuário não encontrado");
     
-//   } catch (err) {
-//     res.status(500).send(err.message);
-//   }
+    const visitas = await db.query(`SELECT SUM(url."visitCount") FROM url WHERE "userId" = $1`, [usuario.rows[0].id])
+
+    const urls = await db.query(`SELECT * FROM url WHERE "userId" = $1`, [usuario.rows[0].id])
+
+    const shortenedUrls = urls.rows.map((i) => {
+      return {
+        id: i.id,
+        shortUrl: i.shortUrl,
+        url: i.url,
+        visitCount: i.visitCount
+      }
+    })
+
+    res.status(200).send({
+      id: usuario.rows[0].id,
+      name: usuario.rows[0].name,
+      visitCount: visitas.rows[0].sum || 0,
+      shortenedUrls
+    })
+
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 }
+
 
 export async function ranking(req, res) {
 // //     const { customerId, gameId, daysRented } = req.body;
