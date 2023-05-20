@@ -240,11 +240,25 @@ export async function listarUsuarioToken(req, res) {
   }
 }
 
-
 export async function ranking(req, res) {
 try{
-  
-  res.sendStatus(201);
+
+  const ranking = await db.query(`SELECT usuarios.id, usuarios.name,
+  COUNT(url.id) as "linksCount", SUM(url."visitCount") as "visitCount"
+  FROM usuarios LEFT JOIN url ON url."userId" = usuarios.id
+  GROUP BY usuarios.id
+  ORDER BY "visitCount" DESC
+  LIMIT 10`)
+
+  const rankingModelo = ranking.rows.map((i) => ({
+    id: i.usuarios.id,
+    name: i.usuarios.name,
+    linksCount: i.linksCount,
+    visitCount: i.visitCount
+}));
+
+
+  res.status(201).send(rankingModelo);
     } catch (err) {
       res.status(500).send(err.message);
     } 
