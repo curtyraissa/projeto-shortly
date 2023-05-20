@@ -130,7 +130,7 @@ export async function listarURLporId(req, res) {
 
     if (listaPorId.rowCount === 0) {return res.sendStatus(404);}
 
-    return res.status(200).send({"id": result.rows[0].id, "shortUrl": result.rows[0].shortUrl, "url": result.rows[0].url});
+    return res.status(200).send({"id": listaPorId.rows[0].id, "shortUrl": listaPorId.rows[0].shortUrl, "url": listaPorId.rows[0].url});
   } catch (err) {
     res.status(500).send(err.message);
   }
