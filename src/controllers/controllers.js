@@ -60,14 +60,14 @@ export async function login(req, res) {
   if (usuarioExiste.rowCount === 0) return res.sendStatus(401)
 
   // Verificar se a senha digitada corresponde com a criptografada
-  const senhaEstaCorreta = bcrypt.compareSync(password, usuarios.password)
+  const senhaEstaCorreta = bcrypt.compareSync(password, usuarios.rows[0].password)
   if (!senhaEstaCorreta) return res.status(401).send("Senha incorreta")
 
   // Criar um token para enviar ao usuário
   const token = uuid()
 
   // Guardar o token e o id do usuário para saber que ele está logado
-  await db.query(`INSERT INTO sessoes ("userId", token) VALUES ($1, $2)`, [usuarios.id, token])
+  await db.query(`INSERT INTO sessoes (token, "userId") VALUES ($1, $2)`, [token, usuarios.id])
 
   // Finalizar com status de sucesso e enviar token para o cliente
     res.status(200).send({"token": token});
