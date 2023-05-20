@@ -103,8 +103,10 @@ export async function inserirURL(req, res) {
     // Verifica se há alguma sessão encontrada
     if (sessao.rows.length === 0) return res.status(401).send("Token inválido");
 
+    console.log("sessoes " ,sessao)
     // Caso a sessão tenha sido encontrada, iremos guardar na variável "sessao" o objeto de sessão encontrado
     const sessaoEncontrada = sessao.rows[0];
+    console.log("sessao en " ,sessaoEncontrada)
 
     // Tendo o id do usuário, podemos procurar seus dados
     const usuario = await db.query(`SELECT * FROM usuarios WHERE id = $1`, [sessaoEncontrada.userId]);
