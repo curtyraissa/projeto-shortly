@@ -45,7 +45,7 @@ export async function cadastro(req, res) {
 }
 
 export async function login(req, res) {
-  const {email, password}= req.body
+  const {email, password} = req.body
 
   const validation = loginSchema.validate(req.body, { abortEarly: false });
 
@@ -55,12 +55,9 @@ export async function login(req, res) {
   }
 
   try {
-    // Verificar se esse e-mail já foi cadastrado
-    const usuarioExiste = await db.query(`
-    SELECT * FROM usuarios WHERE email = $1
-  `, [email])
-
-  if (usuarioExiste.rowCount <= 0) return res.sendStatus(401)
+  // Verificar se esse e-mail já foi cadastrado
+  const usuarioExiste = await db.query(`SELECT * FROM usuarios WHERE email = $1`, [email])
+  if (usuarioExiste.rowCount === 0) return res.sendStatus(401)
 
   // Verificar se a senha digitada corresponde com a criptografada
   const senhaEstaCorreta = bcrypt.compareSync(password, usuarios.password)
