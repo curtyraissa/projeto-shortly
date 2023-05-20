@@ -67,7 +67,7 @@ export async function login(req, res) {
   const token = uuid()
 
   // Guardar o token e o id do usuário para saber que ele está logado
-  await db.query(`INSERT INTO sessoes (token, "userId") VALUES ($1, $2)`, [token, usuarios.id])
+  await db.query(`INSERT INTO sessoes (token, "userId") VALUES ($1, $2)`, [token, usuarioExiste])
 
   // Finalizar com status de sucesso e enviar token para o cliente
     res.status(200).send({"token": token});
