@@ -250,6 +250,8 @@ try{
   ORDER BY "visitCount" DESC
   LIMIT 10`)
 
+  console.log(ranking)
+
   const rankingModelo = ranking.rows.map((i) => ({
     id: i.usuarios.id,
     name: i.usuarios.name,
