@@ -78,7 +78,6 @@ export async function login(req, res) {
 
 export async function inserirURL(req, res) {
   const { url } = req.body;
-  //const { id: userId } = req.params;
 
   const validation = urlSchema.validate(req.body, { abortEarly: false });
 
@@ -115,7 +114,7 @@ export async function inserirURL(req, res) {
 
     const shortUrl = nanoid(10);
 
-    const inserirShortUrl = await db.query(`INSERT INTO url ("shortUrl", url, "userId") VALUES ($1, $2, $3) RETURNING id`, [shortUrl, url, userId]);
+    const inserirShortUrl = await db.query(`INSERT INTO url ("shortUrl", url, "userId") VALUES ($1, $2, $3) RETURNING id`, [shortUrl, url, sessaoEncontrada.userId]);
 
     return res.status(201).send({ "id": inserirShortUrl.rows[0].id, "shortUrl": shortUrl });
   } catch (err) {
