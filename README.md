@@ -3,14 +3,14 @@
 
 ✅ Requisitos
 - Geral
-    - [ ]  A porta utilizada pelo seu servidor deve ser a **5000**.
-    - [ ]  Versionamento usando Git é obrigatório, crie um **repositório público** no seu perfil do GitHub **apenas com o código do back-end.**
-    - [ ]  Faça commits a cada funcionalidade implementada.
-    - [ ]  **Utilize dotenv.**
-    - [ ]  Não esqueça de criar o `.gitignore`: a `node_modules` e o `.env` não devem ser commitados.
-    - [ ]  Seu projeto deve ter, obrigatoriamente, os arquivos `package.json` e `package-lock.json`, que devem estar na raiz do projeto. Eles devem conter todas as **dependências** do projeto.
-    - [ ]  Adicione o código que inicia o servidor, com a função `listen`, no arquivo `src/app.js`.
-    - [ ]  Adicione um script no `package.json` para iniciar o servidor rodando `npm start` como no exemplo abaixo:
+    - [x]  A porta utilizada pelo seu servidor deve ser a **5000**.
+    - [x]  Versionamento usando Git é obrigatório, crie um **repositório público** no seu perfil do GitHub **apenas com o código do back-end.**
+    - [x]  Faça commits a cada funcionalidade implementada.
+    - [x]  **Utilize dotenv.**
+    - [x]  Não esqueça de criar o `.gitignore`: a `node_modules` e o `.env` não devem ser commitados.
+    - [x]  Seu projeto deve ter, obrigatoriamente, os arquivos `package.json` e `package-lock.json`, que devem estar na raiz do projeto. Eles devem conter todas as **dependências** do projeto.
+    - [x]  Adicione o código que inicia o servidor, com a função `listen`, no arquivo `src/app.js`.
+    - [x]  Adicione um script no `package.json` para iniciar o servidor rodando `npm start` como no exemplo abaixo:
         
         ```json
         // package.json
@@ -23,21 +23,21 @@
         }
         ```
         
-    - [ ]  A estrutura de arquivos e pastas do projeto deve seguir o padrão aprendido nas últimas semanas, com as camadas `controllers`, `routers`, `middlewares` e `schemas` (onde for necessário).
+    - [x]  A estrutura de arquivos e pastas do projeto deve seguir o padrão aprendido nas últimas semanas, com as camadas `controllers`, `routers`, `middlewares` e `schemas` (onde for necessário).
 - Banco de dados
-    - [ ]  Dessa vez, todo o banco será criado por você do zero! Utilize o banco de dados PostgreSQL e modele o banco de dados de acordo com a necessidade.
-    - [ ]  Use **CONSTRAINTS** quando aplicável para garantir a lógica de negócio da aplicação.
-    - [ ]  Use um campo chamado `createdAt` para armazenar a data de criação das entidades.
-    - [ ]  **Todas chaves primárias devem ser números inteiros.**
-    - [ ]  **Abuse do SQL!** Faça o mínimo possível de processamento no navegador.
+    - [x]  Dessa vez, todo o banco será criado por você do zero! Utilize o banco de dados PostgreSQL e modele o banco de dados de acordo com a necessidade.
+    - [x]  Use **CONSTRAINTS** quando aplicável para garantir a lógica de negócio da aplicação.
+    - [x]  Use um campo chamado `createdAt` para armazenar a data de criação das entidades.
+    - [x]  **Todas chaves primárias devem ser números inteiros.**
+    - [x]  **Abuse do SQL!** Faça o mínimo possível de processamento no navegador.
 - *Back-end*
-    - [ ]  Implemente o *back-end* da aplicação em **Node + Express** seguindo a arquitetura de *routes*, *controllers* e *middlewares*.
-    - [ ]  Dados sensíveis (como senhas) devem estar **criptografados**.
-    - [ ]  Proteja sua aplicação contra ataques do tipo *SQL Injection*.
-    - [ ]  Defina no arquivo `package.json` os scripts de inicialização da API, informe que deseja trabalhar com modules na aplicação e confira se as dependências estão devidamente instaladas no projeto.
+    - [x]  Implemente o *back-end* da aplicação em **Node + Express** seguindo a arquitetura de *routes*, *controllers* e *middlewares*.
+    - [x]  Dados sensíveis (como senhas) devem estar **criptografados**.
+    - [x]  Proteja sua aplicação contra ataques do tipo *SQL Injection*.
+    - [x]  Defina no arquivo `package.json` os scripts de inicialização da API, informe que deseja trabalhar com modules na aplicação e confira se as dependências estão devidamente instaladas no projeto.
 - Autenticação
-    - [ ]  Todas as rotas autenticadas devem receber um *header* `Authorization` no formato `Bearer TOKEN`.
-    - [ ]  Note que nem todas as rotas são autenticadas! Isso está descrito em cada rota da seção abaixo (Rotas).
+    - [x]  Todas as rotas autenticadas devem receber um *header* `Authorization` no formato `Bearer TOKEN`.
+    - [x]  Note que nem todas as rotas são autenticadas! Isso está descrito em cada rota da seção abaixo (Rotas).
 - Rotas
     - **POST** `/signup`
         - Esta **não é** uma rota autenticada.
@@ -308,10 +308,10 @@
             
     </aside>
     
-    - [ ]  É **obrigatório** fazer o **dump do banco de dados e colocá-lo dentro da pasta raiz do projeto**. O arquivo gerado deve ter o nome `dump.sql`.
+    - [x]  É **obrigatório** fazer o **dump do banco de dados e colocá-lo dentro da pasta raiz do projeto**. O arquivo gerado deve ter o nome `dump.sql`.
 - *Deploy*
-    - [ ]  Faça o deploy da sua aplicação (tanto a API quanto o banco).
-    - [ ]  Na hora de fazer o deploy do banco, cuidado com conexão SSL! Se for configurar conexão SSL para deploy, o avaliador não conseguirá se conectar. Se for rodar o avaliador, desative a conexão SSL ou ative-a somente para deploy via variáveis de ambiente.
+    - [x]  Faça o deploy da sua aplicação (tanto a API quanto o banco).
+    - [x]  Na hora de fazer o deploy do banco, cuidado com conexão SSL! Se for configurar conexão SSL para deploy, o avaliador não conseguirá se conectar. Se for rodar o avaliador, desative a conexão SSL ou ative-a somente para deploy via variáveis de ambiente.
         
         ```jsx
         import pg from "pg"
