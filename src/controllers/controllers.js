@@ -253,8 +253,8 @@ try{
   console.log(ranking)
 
   const rankingModelo = ranking.rows.map((i) => ({
-    id: i.usuarios.id,
-    name: i.usuarios.name,
+    id: i.id,
+    name: i.name,
     linksCount: i.linksCount,
     visitCount: i.visitCount
 }));
