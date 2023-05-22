@@ -146,7 +146,7 @@ export async function buscarShortURL(req, res) {
     } catch (err) {
       res.status(500).send(err.message);
     }
-  }
+}
 
 export async function deletarURL(req, res) {
   const {id} = req.params
@@ -259,6 +259,6 @@ try{
     } catch (err) {
       res.status(500).send(err.message);
     } 
-  }
+}
 
   
