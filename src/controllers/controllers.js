@@ -4,8 +4,6 @@ import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 import { nanoid } from 'nanoid'
 
-
-
 export async function cadastro(req, res) {
   const {email, name, password, confirmPassword}= req.body
 
@@ -244,7 +242,7 @@ export async function ranking(req, res) {
 try{
 
   const ranking = await db.query(`SELECT usuarios.id, usuarios.name,
-  COUNT(url.id) as "linksCount", SUM(url."visitCount") as "visitCount"
+  COUNT(url.id) as "linksCount", COALESCE(SUM(url."visitCount"), 0) as "visitCount"
   FROM usuarios LEFT JOIN url ON url."userId" = usuarios.id
   GROUP BY usuarios.id
   ORDER BY "visitCount" DESC
@@ -257,8 +255,7 @@ try{
     visitCount: i.visitCount
 }));
 
-
-  res.status(201).send(rankingModelo);
+  res.status(200).send(rankingModelo);
     } catch (err) {
       res.status(500).send(err.message);
     } 
